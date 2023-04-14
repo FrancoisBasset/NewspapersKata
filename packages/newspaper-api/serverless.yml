@@ -1,0 +1,33 @@
+# For full config options, check the docs:
+#    docs.serverless.com
+service: newspaper-api
+useDotenv: true
+
+plugins:
+  - serverless-esbuild
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage:  ${file(./env.${opt:stage}.yml):stage}
+  region:  ${file(./env.${opt:stage}.yml):deployRegion}
+  timeout: 120
+
+custom:
+  apiGatewayCaching:
+    enabled: true
+  esbuild:
+    packager: yarn
+    bundle: true
+    minify: true
+    sourcemap: true
+    exclude: ['aws-sdk']
+    target: 'node16'
+    define: { 'require.resolve': undefined }
+    platform: 'node'
+  output:
+    file: .serverless/output.json
+
+functions:
+  - ${file(./src/endpoints/offers/serverless.yml)}

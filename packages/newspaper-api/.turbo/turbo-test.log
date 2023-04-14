@@ -1,0 +1,12 @@
+yarn run v1.22.19
+$ jest
+PASS src/endpoints/offers/functions/findOffers/findOffers.test.ts
+  findOffers
+    ✓ should find all offers (1 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        0.735 s, estimated 1 s
+Ran all test suites.
+Done in 1.20s.

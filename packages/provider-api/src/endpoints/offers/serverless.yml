@@ -1,0 +1,12 @@
+findAllOffers:
+  handler: src/endpoints/offers/functions/findAll/index.handler
+  description: Find all offers
+  events:
+    - http:
+        path: offers
+        method: get
+        cors: true
+  tags:
+    version: ${file(./env.${opt:stage, self:provider.stage}.yml):version}
+    env: ${opt:stage}
+    service: provider-api

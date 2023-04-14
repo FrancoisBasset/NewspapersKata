@@ -1,0 +1,4 @@
+yarn run v1.22.19
+$ jest --passWithNoTests
+No tests found, exiting with code 0
+Done in 0.56s.

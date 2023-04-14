@@ -1,0 +1,31 @@
+{
+  "name": "@kata/provider-api",
+  "version": "0.0.1",
+  "description": "Provider API Gateway",
+  "scripts": {
+    "develop": "sls offline --stage dev",
+    "build": "tsc",
+    "test": "jest --passWithNoTests"
+  },
+  "author": "© Libé",
+  "license": "UNLICENCED",
+  "bugs": {
+    "url": "https://gitlab.com/libetech/cms/cms-resources-api/-/issues"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.83",
+    "aws-lambda": "^1.0.6"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.ts$": ["ts-jest", {"tsconfig": "tsconfig.json"}]
+    },
+    "testMatch": [
+      "/**/*.test.ts"
+    ]
+  }
+}

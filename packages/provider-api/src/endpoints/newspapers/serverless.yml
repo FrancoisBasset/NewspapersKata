@@ -1,0 +1,12 @@
+findAllNewspaper:
+  handler: src/endpoints/newspapers/functions/findAll/index.handler
+  description: Find all newspapers
+  events:
+    - http:
+        path: newspapers
+        method: get
+        cors: true
+  tags:
+    version: ${file(./env.${opt:stage, self:provider.stage}.yml):version}
+    env: ${opt:stage}
+    service: provider-api
