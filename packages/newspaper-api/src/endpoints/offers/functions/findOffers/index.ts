@@ -1,7 +1,7 @@
 import { APIGatewayProxyResult } from 'aws-lambda';
 import axios from "axios";
-import OffersCatalog from './OffersCatalog';
-import { getNewspapers, getTypes, getDurations } from './getters';
+import OffersCatalog from '../../../../OffersCatalog';
+import { getNewspapers, getTypes, getDurations } from '../../../../getters';
 
 export const handler = async (): Promise<APIGatewayProxyResult> => {
 	const offersStrings: string[] = (await axios(`http://localhost:5000/dev/offers`)).data;
