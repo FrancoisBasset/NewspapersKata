@@ -1,10 +1,9 @@
 import { APIGatewayProxyResult } from 'aws-lambda';
 import axios from "axios";
 import OffersCatalog from './OffersCatalog';
-import Newspaper from './Newspaper';
+import { getNewspapers, getTypes, getDurations } from './getters';
 
 export const handler = async (): Promise<APIGatewayProxyResult> => {
-    const newspapers: Newspaper[] = (await axios(`http://localhost:5000/dev/newspapers`)).data;
 	const offersStrings: string[] = (await axios(`http://localhost:5000/dev/offers`)).data;
 
     const offers: OffersCatalog = {
@@ -13,19 +12,9 @@ export const handler = async (): Promise<APIGatewayProxyResult> => {
         duration: []
     };
 
-	offersStrings.forEach(offerString => {
-        const newspaper: Newspaper | undefined = newspapers.find(n => n.id === offerString.substring(0,2));
-
-		if (newspaper) {
-        	offers.newspapers.push(newspaper.name);
-        	offers.type.push(offerString.substring(3,6));
-			offers.duration.push(offerString.substring(7));
-		}
-    });
-
-	offers.newspapers = [...new Set(offers.newspapers)];
-	offers.type = [...new Set(offers.type)];
-	offers.duration = [...new Set(offers.duration)];
+	offers.newspapers = await getNewspapers(offersStrings);
+	offers.type = getTypes(offersStrings);
+	offers.duration = getDurations(offersStrings);
 
     return {
         body: JSON.stringify(({
