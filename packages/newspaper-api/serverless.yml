@@ -31,3 +31,4 @@ custom:
 
 functions:
   - ${file(./src/endpoints/offers/serverless.yml)}
+  - ${file(./src/endpoints/names/serverless.yml)}

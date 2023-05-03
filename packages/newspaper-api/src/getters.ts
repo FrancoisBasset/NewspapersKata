@@ -1,6 +1,10 @@
 import axios from "axios";
 import Newspaper from './Newspaper';
 
+export async function getOfferStrings(): Promise<string[]> {
+	return (await axios(`http://localhost:5000/dev/offers`)).data;
+}
+
 export async function getNewspapers(offersStrings: string[]): Promise<string[]> {
 	const newspapersData: Newspaper[] = (await axios(`http://localhost:5000/dev/newspapers`)).data;
 
