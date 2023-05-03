@@ -1,0 +1,12 @@
+findTypes:
+  handler: src/endpoints/types/functions/findTypes/index.handler
+  description: Find all types from provider
+  events:
+    - http:
+        path: offers/types
+        method: get
+        cors: true
+  tags:
+    version: ${file(./env.${opt:stage, self:provider.stage}.yml):version}
+    env: ${opt:stage}
+    service: newspaper-api
