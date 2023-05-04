@@ -1,0 +1,12 @@
+findDurations:
+  handler: src/endpoints/durations/functions/findDurations/index.handler
+  description: Find all durations from provider
+  events:
+    - http:
+        path: offers/durations
+        method: get
+        cors: true
+  tags:
+    version: ${file(./env.${opt:stage, self:provider.stage}.yml):version}
+    env: ${opt:stage}
+    service: newspaper-api
