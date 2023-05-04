@@ -3,7 +3,7 @@ This repository uses yarn so please install it globally
 
 ```npm install -g yarn```
 
-# Install
+## Install
 
 ````
 > yarn install
@@ -11,60 +11,44 @@ This repository uses yarn so please install it globally
 
 NB: if you have an error referring to cpu-features please ignore it.
 
-# Develop
+## Develop
 
 ````
 > turbo develop
 ````
 
-# Tests
+## Tests
 
 To launch all unit test
 ````
 > turbo test
 ````
 
-# Description
+# Development process
 
-An offer is a string provided by the provider-api following this pattern: {newspaper_id}_{offer_type}-{offer_duration},
-the newspaper id, the offer type and the offer duration being strings containing only uppercase letters 
-(no numbers, no punctuation).
+Pour faire ce test, j'ai d'abord :
+- Fait fonctionner le projet sur ma machine
+- Essayé toutes les routes d'API pour comprendre ce que fait le projet
+- Lu la lambda de la route /newspaper/offers
+- Refactorisé la lambda pour faire la même focntionnalité mais différemment
 
-Each of the 3 list are used by several front end applications. We need to be very careful when modifying the code base.
+J'ai ajouté 4 méthodes pour séparer ce que fait cette lambda :
+-   `getOfferStrings`: Encapsule l'appel réseau de la route `/dev/offers`
+-   `getNewspapers`: Récupère la liste des noms des newspapers. Cette méthode est réutilisé à la fois dans la route `/dev/newspapers/offers` et `/dev/newspapers/names`
+-   `getTypes`: Récupère la liste des types des abonnements. Cette méthode est réutilisé à la fois dans la route `/dev/newspapers/offers` et `/dev/newspapers/offers/types`
+-   `getDurations`: Récupère la liste des durées des abonnements. Cette méthode est réutilisé à la fois dans la route `/dev/newspapers/offers` et `/dev/newspapers/offers/durations`
 
-# Goal of the exercise
+J'ai crée les interfaces Newspaper avec un id et un nom
+Et OffersCatalog avec les propriétés newspapers, type, duration, pour matcher avec les résultats de l'appel réseau.
 
-## Step 1
-Today, the `/newspaper/offers` endpoint contains the logic to compute the three lists of distinct values. 
-This legacy code is not easy to read and to update. First we need you to refactor this part and make it more readable 
-without breaking the functionality.
+J'ai crée des tests unitaires qui va tester si un objet de bon type est utilisé : Object ou Array, si l'object a les propriétés qu'il faut, ou si l'array possède bien quelques valeurs attendues.
 
-## Step 2 
+Pour le Step 3, j'ai utilisé le plugin serverless-s3-local pour simuler une base S3 en local.
+J'ai crée une lambda pour créer directement le fichier CSV qui contient les données `newspaper_id,offer_type,offer_duration`
 
-We would like to be able to reuse this logic in 3 new endpoints in the `newspaper-api` which are:
+J'ai regardé si j'ai bien le fichier CSV de crée en appellant la route issue de la lambda. 
+Cela fonctionne bien et il a fallu que ce soit un CRON pour appeler automatiquement cette lambda à 6 heure du matin.
+J'ai ajouté `- schedule: cron(0 6 * * ? *)` dans les events et supprimé la route API car plus besoin.
+Et bien sûr j'ai testé en premier avec un CRON `* * * * * *` toutes les minutes pour être sûr que cette lambda soit bien appelé.
 
-```
-- /newspapers/names             // return only an array of all newspaper names 
-- /newspapers/offers/types      // return only an array of all offer types 
-- /newspapers/offers/durations  // return only an array of all offer durations 
-```
-
-## Step 3 
-Our product owner would like to extract those data in a csv file and put it on a S3 bucket where he can consult it on demand (We assume he has access to the aws console).
-Make sure you generate this csv file every day at 6AM.
-
-Do the architecture of this new microservice. You can use [serverless-s3-local plugin](https://www.serverless.com/plugins/serverless-s3-local) to emulate a S3 bucket locally.
-
-# Rules
-There are some rules to follow:
-
-You must commit regularly with an explicit message each time
-You must not modify code when comments explicitly forbid it
-
-# Deliverables
-What do we expect from you:
-
-- Fork this repository and make a merge request to provide us your code.
-- Several commits, with an explicit message each time
-- A file / message / email explaining your process and principles you've followed, and how one developer would go about reusing the feature
-
+Si un développeur reprend le projet, cela sera beaucoup plus simple car il y a aura des tests, et des méthodes beaucoup moins longues et plus compréhensibles.
