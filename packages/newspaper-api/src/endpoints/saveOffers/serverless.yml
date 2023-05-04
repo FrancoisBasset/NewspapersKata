@@ -1,0 +1,9 @@
+saveOffers:
+  handler: src/endpoints/saveOffers/functions/saveOffers/index.handler
+  events:
+    - schedule: cron(0 6 * * ? *)
+  tags:
+    version: ${file(./env.${opt:stage, self:provider.stage}.yml):version}
+    env: ${opt:stage}
+    service: newspaper-api
+    

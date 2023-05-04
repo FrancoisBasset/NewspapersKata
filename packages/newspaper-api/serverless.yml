@@ -6,6 +6,7 @@ useDotenv: true
 plugins:
   - serverless-esbuild
   - serverless-offline
+  - serverless-s3-local
 
 provider:
   name: aws
@@ -28,9 +29,20 @@ custom:
     platform: 'node'
   output:
     file: .serverless/output.json
+  s3:
+    host: localhost
+    directory: ./S3
+
+resources:
+  Resources:
+    NewResource:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: local
 
 functions:
   - ${file(./src/endpoints/offers/serverless.yml)}
   - ${file(./src/endpoints/types/serverless.yml)}
   - ${file(./src/endpoints/names/serverless.yml)}
   - ${file(./src/endpoints/durations/serverless.yml)}
+  - ${file(./src/endpoints/saveOffers/serverless.yml)}
