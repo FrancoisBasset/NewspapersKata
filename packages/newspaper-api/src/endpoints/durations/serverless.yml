@@ -3,7 +3,7 @@ findDurations:
   description: Find all durations from provider
   events:
     - http:
-        path: offers/durations
+        path: newspapers/offers/durations
         method: get
         cors: true
   tags:

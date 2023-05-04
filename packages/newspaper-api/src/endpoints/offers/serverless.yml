@@ -3,7 +3,7 @@ healthcheck:
   description: Find all offers from provider
   events:
     - http:
-        path: offers
+        path: newspapers/offers
         method: get
         cors: true
   tags:

@@ -3,7 +3,7 @@ findNames:
   description: Find all names from provider
   events:
     - http:
-        path: names
+        path: newspapers/names
         method: get
         cors: true
   tags:

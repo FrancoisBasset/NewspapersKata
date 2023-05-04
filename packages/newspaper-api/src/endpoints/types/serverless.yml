@@ -3,7 +3,7 @@ findTypes:
   description: Find all types from provider
   events:
     - http:
-        path: offers/types
+        path: newspapers/offers/types
         method: get
         cors: true
   tags:
